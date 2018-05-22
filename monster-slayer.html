@@ -13,26 +13,26 @@
       <div class="small-6 columns">
         <h1 class="text-center">YOU</h1>
         <div class="healthbar" id="you-healthbar">
-          <div class="healthbar text-center" style="background-color: green; margin: 0; color: white;">
-            {{ youHealthBar }}
+          <div class="healthbar text-center" style="background-color: green; margin: 0; color: white;" :style="{ width: playerHealthBar + '%'}">
+            {{ playerHealthBar }}
           </div>
         </div>
       </div>
       <div class="small-6 columns">
         <h1 class="text-center">MONSTER</h1>
         <div class="healthbar" id="monster-healthbar">
-          <div class="healthbar text-center" style="background-color: green; margin: 0; color: white;">
+          <div class="healthbar text-center" style="background-color: green; margin: 0; color: white;" :style="{ width: monsterHealthBar + '%'}">
             {{ monsterHealthBar }}
           </div>
         </div>
       </div>
     </section>
-    <section class="row controls">
+    <section class="row controls" v-if="!newGameStarted">
       <div class="small-12 columns">
         <button id="start-game" @click="startNewGame">START NEW GAME</button>
       </div>
     </section>
-    <section class="row controls" v-show="newGameStarted">
+    <section class="row controls" v-else="newGameStarted">
       <div class="small-12 columns">
         <button id="attack" @click="attack()">ATTACK</button>
         <button id="special-attack" @click="specialAttack()">SPECIAL ATTACK</button>
@@ -40,16 +40,18 @@
         <button id="give-up" @click="giveUp()">GIVE UP</button>
       </div>
     </section>
-    <section class="row log">
+    <section class="row log" v-if="logs.length > 0">
       <div class="small-12 columns">
         <ul>
-          <li v-for="log in logs">
-            <div class="row red">{{ log }}</div>
+          <li v-for="log in logs" :class="{'player-turn': log.isPlayer,
+                      'monster-turn': !log.isPlayer }">
+            {{ log.text }}
           </li>
         </ul>
       </div>
     </section>
   </div>
+  <script src="monster-slayer.js"></script>
 </body>
 
 </html>
